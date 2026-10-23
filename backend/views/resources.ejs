@@ -1,0 +1,169 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Staff, Ambulance & Supply Roster</h2>
+  <p>Keep critical personnel, vehicles, and stock levels visible by hospital.</p>
+</section>
+
+<section class="grid grid-3">
+  <article class="panel">
+    <h3>Add Staff</h3>
+    <form data-json-form data-endpoint="/api/staff">
+      <label>Name <input name="name" required /></label>
+      <label>Role
+        <select name="role" required>
+          <option value="Doctor">Doctor</option>
+          <option value="Nurse">Nurse</option>
+          <option value="Paramedic">Paramedic</option>
+        </select>
+      </label>
+      <label>Specialization <input name="specialization" /></label>
+      <label>Contact Number <input name="contactNumber" required /></label>
+      <label>Hospital
+        <select name="hospitalId" required>
+          <% hospitals.forEach((hospital) => { %>
+            <option value="<%= hospital.HospitalID %>"><%= hospital.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <button type="submit">Save Staff</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Add Ambulance</h3>
+    <form data-json-form data-endpoint="/api/ambulances">
+      <label>Vehicle No <input name="vehicleNo" required /></label>
+      <label>Driver Name <input name="driverName" required /></label>
+      <label>Status
+        <select name="status">
+          <option value="Available">Available</option>
+          <option value="On Trip">On Trip</option>
+          <option value="Maintenance">Maintenance</option>
+        </select>
+      </label>
+      <label>Hospital
+        <select name="hospitalId" required>
+          <% hospitals.forEach((hospital) => { %>
+            <option value="<%= hospital.HospitalID %>"><%= hospital.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <button type="submit">Save Ambulance</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Add Supply</h3>
+    <form data-json-form data-endpoint="/api/supplies">
+      <label>Item Name <input name="itemName" required /></label>
+      <label>Quantity <input name="quantity" type="number" min="0" required /></label>
+      <label>Category
+        <select name="category" required>
+          <option value="Medicine">Medicine</option>
+          <option value="Oxygen">Oxygen</option>
+          <option value="Blood">Blood</option>
+          <option value="Equipment">Equipment</option>
+        </select>
+      </label>
+      <label>Expiry Date <input name="expiryDate" type="date" /></label>
+      <label>Hospital
+        <select name="hospitalId" required>
+          <% hospitals.forEach((hospital) => { %>
+            <option value="<%= hospital.HospitalID %>"><%= hospital.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <button type="submit">Save Supply</button>
+    </form>
+    <div class="message"></div>
+  </article>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Medical Staff</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Specialization</th>
+            <th>Hospital</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% staff.forEach((member) => { %>
+            <tr>
+              <td><%= member.Name %></td>
+              <td><%= member.Role %></td>
+              <td><%= member.Specialization || "General" %></td>
+              <td>#<%= member.HospitalID %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Ambulance Fleet</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Vehicle</th>
+            <th>Driver</th>
+            <th>Status</th>
+            <th>Hospital</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ambulances.forEach((ambulance) => { %>
+            <tr>
+              <td><%= ambulance.VehicleNo %></td>
+              <td><%= ambulance.DriverName %></td>
+              <td><span class="badge"><%= ambulance.Status %></span></td>
+              <td>#<%= ambulance.HospitalID %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <h3>Supply Tracker</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Hospital</th>
+          <th>Item</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Expiry</th>
+          <th>Alert</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% supplies.forEach((supply) => { %>
+          <tr>
+            <td><%= supply.hospital_name %></td>
+            <td><%= supply.ItemName %></td>
+            <td><%= supply.Category %></td>
+            <td><%= supply.Quantity %></td>
+            <td><%= formatDateOnly(supply.ExpiryDate) %></td>
+            <td>
+              <span class="badge <%= supply.alert_status === 'OK' ? 'ok' : 'danger' %>"><%= supply.alert_status %></span>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<%- include("partials/footer") %>

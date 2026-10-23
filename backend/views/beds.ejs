@@ -1,0 +1,79 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Bed Board</h2>
+  <p>Track occupancy by hospital and assign admitted patients with a locked SQL transaction.</p>
+</section>
+
+<section class="panel">
+  <h3>Add Bed</h3>
+  <form data-json-form data-endpoint="/api/beds">
+    <div class="form-grid">
+      <label>Ward Type
+        <select name="wardType" required>
+          <option value="ICU">ICU</option>
+          <option value="General">General</option>
+          <option value="Emergency">Emergency</option>
+        </select>
+      </label>
+      <label>Hospital
+        <select name="hospitalId" required>
+          <% hospitals.forEach((hospital) => { %>
+            <option value="<%= hospital.HospitalID %>"><%= hospital.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Patient
+        <select name="patientId">
+          <option value="">Vacant on creation</option>
+          <% patients.filter((patient) => patient.Status === 'Admitted').forEach((patient) => { %>
+            <option value="<%= patient.PatientID %>"><%= patient.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+    </div>
+    <button type="submit">Create Bed</button>
+  </form>
+  <div class="message"></div>
+</section>
+
+<section class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Bed</th>
+        <th>Hospital</th>
+        <th>Ward</th>
+        <th>Status</th>
+        <th>Patient</th>
+        <th>Assignment Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% beds.forEach((bed) => { %>
+        <tr>
+          <td>#<%= bed.BedID %></td>
+          <td><%= bed.hospital_name %></td>
+          <td><%= bed.WardType %></td>
+          <td><span class="badge <%= bed.Status === 'Vacant' ? 'ok' : 'warn' %>"><%= bed.Status %></span></td>
+          <td><%= bed.patient_name || "None" %></td>
+          <td>
+            <% if (bed.Status === 'Vacant') { %>
+              <div class="split">
+                <select data-bed-select="<%= bed.BedID %>">
+                  <option value="">Select patient</option>
+                  <% patients.filter((patient) => patient.Status === 'Admitted').forEach((patient) => { %>
+                    <option value="<%= patient.PatientID %>"><%= patient.Name %></option>
+                  <% }) %>
+                </select>
+                <button type="button" data-bed-assign data-bed-id="<%= bed.BedID %>">Assign</button>
+              </div>
+            <% } else { %>
+              <button type="button" data-bed-release data-bed-id="<%= bed.BedID %>">Release</button>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<%- include("partials/footer") %>

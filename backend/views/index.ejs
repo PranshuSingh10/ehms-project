@@ -1,0 +1,55 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Coordinated disaster response from one operational dashboard</h2>
+  <p>
+    EHMS brings together hospital intake, triage, bed allocation, ambulance movement,
+    shelter occupancy, volunteer assignments, and supply visibility for mass-casualty
+    response teams.
+  </p>
+  <div class="stats">
+    <article class="stat-card">
+      <strong><%= summary.disaster_count %></strong>
+      <span>Disaster events tracked</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= summary.hospital_count %></strong>
+      <span>Hospitals in network</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= summary.patient_count %></strong>
+      <span>Patients registered</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= summary.shelter_count %></strong>
+      <span>Relief shelters active</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= summary.volunteer_count %></strong>
+      <span>Volunteers onboarded</span>
+    </article>
+  </div>
+</section>
+
+<section class="link-grid">
+  <a class="link-card" href="/dashboard">
+    <h3>Admin Dashboard</h3>
+    <p class="muted">Single-glance view of capacity, triage pressure, transport readiness, and shelters.</p>
+  </a>
+  <a class="link-card" href="/patients">
+    <h3>Patient Intake & Triage</h3>
+    <p class="muted">Register casualties and feed the live priority queue powered by the triage view.</p>
+  </a>
+  <a class="link-card" href="/beds">
+    <h3>Bed Board</h3>
+    <p class="muted">Assign patients to beds with transactional locking to prevent double-booking.</p>
+  </a>
+  <a class="link-card" href="/resources">
+    <h3>Operational Resources</h3>
+    <p class="muted">Monitor staff, ambulances, low-stock supplies, and expiring inventory.</p>
+  </a>
+  <a class="link-card" href="/shelters">
+    <h3>Shelters & Volunteers</h3>
+    <p class="muted">Track occupancy and route volunteer support to either shelters or hospitals.</p>
+  </a>
+</section>
+<%- include("partials/footer") %>

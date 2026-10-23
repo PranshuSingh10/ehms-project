@@ -1,0 +1,68 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Treatment Log</h2>
+  <p>Document interventions against patients and the staff member responsible for each treatment event.</p>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Record Treatment</h3>
+    <form data-json-form data-endpoint="/api/treatments">
+      <div class="form-grid">
+        <label>Patient
+          <select name="patientId" required>
+            <% patients.forEach((patient) => { %>
+              <option value="<%= patient.PatientID %>"><%= patient.Name %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Staff
+          <select name="staffId" required>
+            <% staff.forEach((member) => { %>
+              <option value="<%= member.StaffID %>"><%= member.Name %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Treatment Date <input name="treatmentDate" type="datetime-local" required /></label>
+        <label>Medication <input name="medication" /></label>
+      </div>
+      <label>Description <textarea name="description"></textarea></label>
+      <button type="submit">Save Treatment</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Why it matters</h3>
+    <p class="muted">
+      Treatment records tie patient care back to specific staff members, which keeps the
+      project’s clinical activity auditable for reporting and joins.
+    </p>
+  </article>
+</section>
+
+<section class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Patient</th>
+        <th>Staff</th>
+        <th>Medication</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% treatments.forEach((treatment) => { %>
+        <tr>
+          <td><%= formatDateTime(treatment.TreatmentDate) %></td>
+          <td><%= treatment.patient_name %></td>
+          <td><%= treatment.staff_name %></td>
+          <td><%= treatment.Medication || "None" %></td>
+          <td><%= treatment.Description || "N/A" %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<%- include("partials/footer") %>

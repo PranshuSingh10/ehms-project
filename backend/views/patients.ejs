@@ -1,0 +1,137 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Patient Intake & Triage</h2>
+  <p>Register disaster-linked patients, capture triage assessments, and monitor the live triage priority queue.</p>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Register Patient</h3>
+    <form data-json-form data-endpoint="/api/patients">
+      <div class="form-grid">
+        <label>Name <input name="name" required /></label>
+        <label>Age <input name="age" type="number" min="0" required /></label>
+        <label>Gender <input name="gender" required /></label>
+        <label>Status
+          <select name="status">
+            <option value="Admitted">Admitted</option>
+            <option value="Discharged">Discharged</option>
+            <option value="Deceased">Deceased</option>
+            <option value="Transferred">Transferred</option>
+          </select>
+        </label>
+        <label>Disaster
+          <select name="disasterId" required>
+            <% disasters.forEach((disaster) => { %>
+              <option value="<%= disaster.DisasterID %>"><%= disaster.Type %> - <%= disaster.Location %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Shelter
+          <select name="shelterId">
+            <option value="">None</option>
+            <% shelters.forEach((shelter) => { %>
+              <option value="<%= shelter.ShelterID %>"><%= shelter.Location %></option>
+            <% }) %>
+          </select>
+        </label>
+      </div>
+      <button type="submit">Register Patient</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Add Triage Record</h3>
+    <form data-json-form data-endpoint="/api/triage-records">
+      <div class="form-grid">
+        <label>Patient
+          <select name="patientId" required>
+            <% patients.forEach((patient) => { %>
+              <option value="<%= patient.PatientID %>"><%= patient.Name %> (#<%= patient.PatientID %>)</option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Triage Time <input name="triageTime" type="datetime-local" required /></label>
+        <label>Assessed By
+          <select name="staffId" required>
+            <% staff.forEach((member) => { %>
+              <option value="<%= member.StaffID %>"><%= member.Name %> - <%= member.Role %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Triage Level
+          <select name="triageLevelId" required>
+            <% triageLevels.forEach((level) => { %>
+              <option value="<%= level.TriageLevelID %>"><%= level.ColorCode %> - <%= level.Description %></option>
+            <% }) %>
+          </select>
+        </label>
+      </div>
+      <label>Vital Signs <textarea name="vitalSigns"></textarea></label>
+      <button type="submit">Save Triage Record</button>
+    </form>
+    <div class="message"></div>
+  </article>
+</section>
+
+<section class="panel">
+  <h3>Current Patients</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Status</th>
+          <th>Disaster</th>
+          <th>Shelter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% patients.forEach((patient) => { %>
+          <tr>
+            <td><%= patient.PatientID %></td>
+            <td><%= patient.Name %></td>
+            <td><%= patient.Age %></td>
+            <td><span class="badge"><%= patient.Status %></span></td>
+            <td>#<%= patient.DisasterID %></td>
+            <td><%= patient.ShelterID || "None" %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Live Triage Queue</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Color</th>
+          <th>Description</th>
+          <th>Priority</th>
+          <th>Last Triage</th>
+          <th>Time Since Assessment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% triageQueue.forEach((entry) => { %>
+          <tr>
+            <td><%= entry.PatientName %></td>
+            <td><span class="badge"><%= entry.ColorCode %></span></td>
+            <td><%= entry.TriageDescription %></td>
+            <td><%= entry.PriorityOrder %></td>
+            <td><%= formatDateTime(entry.TriageTime) %></td>
+            <td><%= entry.TimeSinceLastAssessment %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<%- include("partials/footer") %>

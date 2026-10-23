@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EHMS</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <h1>EHMS</h1>
+          <p>Emergency Hospital Management System for natural-disaster response.</p>
+        </div>
+        <nav class="nav">
+          <a class="<%= page === 'home' ? 'active' : '' %>" href="/">Overview</a>
+          <a class="<%= page === 'dashboard' ? 'active' : '' %>" href="/dashboard">Admin Dashboard</a>
+          <a class="<%= page === 'disasters' ? 'active' : '' %>" href="/disasters">Disasters</a>
+          <a class="<%= page === 'hospitals' ? 'active' : '' %>" href="/hospitals">Hospitals</a>
+          <a class="<%= page === 'patients' ? 'active' : '' %>" href="/patients">Patients & Triage</a>
+          <a class="<%= page === 'beds' ? 'active' : '' %>" href="/beds">Bed Board</a>
+          <a class="<%= page === 'resources' ? 'active' : '' %>" href="/resources">Staff, Ambulances & Supplies</a>
+          <a class="<%= page === 'treatments' ? 'active' : '' %>" href="/treatments">Treatments</a>
+          <a class="<%= page === 'transport' ? 'active' : '' %>" href="/transport">Transport Log</a>
+          <a class="<%= page === 'shelters' ? 'active' : '' %>" href="/shelters">Shelters & Volunteers</a>
+        </nav>
+      </aside>
+      <main class="content">

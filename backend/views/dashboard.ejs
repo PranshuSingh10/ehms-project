@@ -1,0 +1,108 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Administrative Dashboard</h2>
+  <p>Use the database views and summaries below to watch bed availability, ambulance readiness, shelter load, and disaster response scale at a glance.</p>
+  <div class="stats">
+    <article class="stat-card">
+      <strong><%= patientSummary.total_patients %></strong>
+      <span>Total patients</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= patientSummary.admitted_patients %></strong>
+      <span>Admitted patients</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= ambulanceSummary.available_ambulances %></strong>
+      <span>Available ambulances</span>
+    </article>
+    <article class="stat-card">
+      <strong><%= ambulanceSummary.on_trip_ambulances %></strong>
+      <span>Ambulances on trip</span>
+    </article>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Hospital Capacity View</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Hospital</th>
+          <th>Total Beds</th>
+          <th>Vacant Beds</th>
+          <th>Staff On Duty</th>
+          <th>Available Ambulances</th>
+          <th>Low Stock Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% hospitalCapacity.forEach((row) => { %>
+          <tr>
+            <td><%= row.HospitalName %></td>
+            <td><%= row.TotalBeds %></td>
+            <td><%= row.VacantBeds %></td>
+            <td><%= row.StaffOnDuty %></td>
+            <td><%= row.AmbulancesAvailable %></td>
+            <td><%= row.LowStockItems %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Disaster Response Overview</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Disaster</th>
+            <th>Location</th>
+            <th>Patients</th>
+            <th>Shelters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% disasterSummary.forEach((row) => { %>
+            <tr>
+              <td><%= row.Type %></td>
+              <td><%= row.Location %></td>
+              <td><%= row.patient_count %></td>
+              <td><%= row.shelter_count %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Shelter Occupancy</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Shelter</th>
+            <th>Disaster</th>
+            <th>Occupancy</th>
+            <th>Capacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shelterSummary.forEach((row) => { %>
+            <tr>
+              <td><%= row.Location %></td>
+              <td><%= row.disaster_type %></td>
+              <td><%= row.OccupancyCount %></td>
+              <td><%= row.Capacity %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
+<%- include("partials/footer") %>

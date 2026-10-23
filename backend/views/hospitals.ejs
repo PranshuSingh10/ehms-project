@@ -1,0 +1,61 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Hospital Setup</h2>
+  <p>Configure participating hospitals and keep a quick eye on core operational capacity.</p>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Add Hospital</h3>
+    <form data-json-form data-endpoint="/api/hospitals">
+      <div class="form-grid">
+        <label>Name <input name="name" required /></label>
+        <label>Location <input name="location" required /></label>
+        <label>Capacity <input name="capacity" type="number" min="0" required /></label>
+        <label>Contact Number <input name="contactNumber" required /></label>
+      </div>
+      <button type="submit">Save Hospital</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>DB Constraint Reminder</h3>
+    <p class="muted">
+      Hospitals are protected with `ON DELETE RESTRICT` from beds, staff, ambulances,
+      supplies, and volunteer assignments, so shared operational resources cannot be orphaned.
+    </p>
+  </article>
+</section>
+
+<section class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Capacity</th>
+        <th>Beds</th>
+        <th>Vacant</th>
+        <th>Staff</th>
+        <th>Ambulances</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% hospitals.forEach((hospital) => { %>
+        <tr>
+          <td><%= hospital.HospitalID %></td>
+          <td><%= hospital.Name %></td>
+          <td><%= hospital.Location %></td>
+          <td><%= hospital.Capacity %></td>
+          <td><%= hospital.total_beds %></td>
+          <td><%= hospital.vacant_beds %></td>
+          <td><%= hospital.staff_count %></td>
+          <td><%= hospital.ambulance_count %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<%- include("partials/footer") %>

@@ -1,0 +1,68 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Transport Log</h2>
+  <p>Record ambulance movement between pickup and drop-off points with a linked patient and vehicle.</p>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Add Transport Record</h3>
+    <form data-json-form data-endpoint="/api/transport-logs">
+      <div class="form-grid">
+        <label>Pickup Location <input name="pickupLocation" required /></label>
+        <label>Drop Location <input name="dropLocation" required /></label>
+        <label>Time <input name="time" type="datetime-local" required /></label>
+        <label>Ambulance
+          <select name="ambulanceId" required>
+            <% ambulances.forEach((ambulance) => { %>
+              <option value="<%= ambulance.AmbulanceID %>"><%= ambulance.VehicleNo %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Patient
+          <select name="patientId" required>
+            <% patients.forEach((patient) => { %>
+              <option value="<%= patient.PatientID %>"><%= patient.Name %></option>
+            <% }) %>
+          </select>
+        </label>
+      </div>
+      <button type="submit">Save Transport Log</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Fleet context</h3>
+    <p class="muted">
+      This log links patients to ambulances directly, which makes it easy to reconstruct
+      transport load and turnaround from plain SQL joins.
+    </p>
+  </article>
+</section>
+
+<section class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Patient</th>
+        <th>Ambulance</th>
+        <th>Pickup</th>
+        <th>Drop</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% transportLogs.forEach((log) => { %>
+        <tr>
+          <td><%= formatDateTime(log.Time) %></td>
+          <td><%= log.patient_name %></td>
+          <td><%= log.vehicle_no %></td>
+          <td><%= log.PickupLocation %></td>
+          <td><%= log.DropLocation %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<%- include("partials/footer") %>

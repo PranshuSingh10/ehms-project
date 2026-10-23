@@ -1,0 +1,67 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Disaster Event Setup</h2>
+  <p>Register and manage the disaster incidents that drive patient, shelter, and response coordination.</p>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Create Disaster Event</h3>
+    <form data-json-form data-endpoint="/api/disasters">
+      <div class="form-grid">
+        <label>Type <input name="type" required /></label>
+        <label>Location <input name="location" required /></label>
+        <label>Start Date <input name="startDate" type="date" required /></label>
+        <label>Severity
+          <select name="severityLevel" required>
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+        </label>
+      </div>
+      <label>Description <textarea name="description"></textarea></label>
+      <button type="submit">Save Disaster</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Response Notes</h3>
+    <p class="muted">
+      Deleting a disaster event cascades to its patients and shelters by schema design.
+      That keeps data ownership explicit for disaster-scoped records.
+    </p>
+  </article>
+</section>
+
+<section class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Start Date</th>
+        <th>Severity</th>
+        <th>Patients</th>
+        <th>Shelters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% disasters.forEach((disaster) => { %>
+        <tr>
+          <td><%= disaster.DisasterID %></td>
+          <td><%= disaster.Type %></td>
+          <td><%= disaster.Location %></td>
+          <td><%= formatDateOnly(disaster.StartDate) %></td>
+          <td><span class="badge"><%= disaster.SeverityLevel %></span></td>
+          <td><%= disaster.patient_count %></td>
+          <td><%= disaster.shelter_count %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<%- include("partials/footer") %>

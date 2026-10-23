@@ -1,0 +1,26 @@
+{
+  "name": "ehms-natural-disaster",
+  "version": "1.0.0",
+  "description": "Emergency Hospital Management System for Natural Disasters",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "postgresql",
+    "express",
+    "ejs",
+    "dbms",
+    "disaster-response"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  }
+}

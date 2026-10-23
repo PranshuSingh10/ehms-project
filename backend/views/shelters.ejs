@@ -1,0 +1,120 @@
+<%- include("partials/header") %>
+<section class="hero">
+  <h2>Shelter & Volunteer Board</h2>
+  <p>Track shelter capacity, patient-linked occupancy, and volunteer assignment across relief sites and hospitals.</p>
+</section>
+
+<section class="grid grid-3">
+  <article class="panel">
+    <h3>Add Shelter</h3>
+    <form data-json-form data-endpoint="/api/shelters">
+      <label>Location <input name="location" required /></label>
+      <label>Capacity <input name="capacity" type="number" min="0" required /></label>
+      <label>Disaster
+        <select name="disasterId" required>
+          <% disasters.forEach((disaster) => { %>
+            <option value="<%= disaster.DisasterID %>"><%= disaster.Type %> - <%= disaster.Location %></option>
+          <% }) %>
+        </select>
+      </label>
+      <button type="submit">Save Shelter</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Add Volunteer</h3>
+    <form data-json-form data-endpoint="/api/volunteers">
+      <label>Name <input name="name" required /></label>
+      <label>Role <input name="role" /></label>
+      <label>Contact Number <input name="contactNumber" required /></label>
+      <button type="submit">Save Volunteer</button>
+    </form>
+    <div class="message"></div>
+  </article>
+
+  <article class="panel">
+    <h3>Assign Volunteer</h3>
+    <form data-json-form data-endpoint="/api/volunteer-assignments">
+      <label>Volunteer
+        <select name="volunteerId" required>
+          <% volunteers.forEach((volunteer) => { %>
+            <option value="<%= volunteer.VolunteerID %>"><%= volunteer.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Shelter
+        <select name="shelterId">
+          <option value="">No shelter</option>
+          <% shelters.forEach((shelter) => { %>
+            <option value="<%= shelter.ShelterID %>"><%= shelter.Location %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Hospital
+        <select name="hospitalId">
+          <option value="">No hospital</option>
+          <% hospitals.forEach((hospital) => { %>
+            <option value="<%= hospital.HospitalID %>"><%= hospital.Name %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Assigned Date <input name="assignedDate" type="date" required /></label>
+      <button type="submit">Save Assignment</button>
+    </form>
+    <div class="message"></div>
+  </article>
+</section>
+
+<section class="grid grid-2">
+  <article class="panel">
+    <h3>Shelter Occupancy</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Capacity</th>
+            <th>Occupancy</th>
+            <th>Disaster</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shelters.forEach((shelter) => { %>
+            <tr>
+              <td><%= shelter.Location %></td>
+              <td><%= shelter.Capacity %></td>
+              <td><%= shelter.OccupancyCount %></td>
+              <td>#<%= shelter.DisasterID %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Volunteer Assignments</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Volunteer</th>
+            <th>Assigned To</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% assignments.forEach((assignment) => { %>
+            <tr>
+              <td><%= assignment.volunteer_name %></td>
+              <td><%= assignment.shelter_location || assignment.hospital_name %></td>
+              <td><%= formatDateOnly(assignment.AssignedDate) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
+<%- include("partials/footer") %>
