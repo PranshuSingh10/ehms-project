@@ -2,7 +2,7 @@
 
 
 
-React frontend for the Emergency Hospital Management System for Natural Disasters (DBMS mini-project, Group 10). It talks to the Express + PostgreSQL backend in the `ehms-backend` repo.
+React frontend for the Emergency Hospital Management System for Natural Disasters (DBMS mini-project, Group 10). It talks to the Express + PostgreSQL backend in the /backend inside repo.
 
 
 
